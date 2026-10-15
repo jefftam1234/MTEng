@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0 - 2026-10-15
+
+- User clarified the intended design: keep the junction-maintained per-agent skill directories locally, but do not upload them. Restored the `.agents/skills`, `.claude/skills` and `.grok/skills` junctions and the `publish-workspace-skills` installer, byte-identical to the VDT copy. The junction folders stay git-ignored.
+- AGENTS.md replaced the `@…/SKILL.md` import with a "Setup — do this first" section, so an agent on a fresh clone runs `publish_skill_links.py --fix` before working. The canonical skill path remains as a fallback.
+- Contract impact: supersedes 1.3.0's import-based loading. Git still tracks a single copy, under `.codex/skills/`.
+- Validation (executed): `--fix` created three junctions and the check run passed (exit 0). `git status --ignored` reports `.agents/`, `.claude/` and `.grok/` as ignored. check_skill.py passed.
+
 ## 1.3.0 - 2026-10-15
 
 - User request: a single skill folder, loaded from AGENTS.md. Removed the `.agents/skills`, `.claude/skills` and `.grok/skills` junctions. They were removed as links only (`cmd /c rmdir`), and the canonical file count stayed at 18 before and after. Git had been tracking four copies of the skill through these junctions.

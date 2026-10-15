@@ -1,13 +1,26 @@
 # 技術士（化学部門）一次試験 study guide — agent instructions
 
-This repo has exactly **one** skill folder: `.codex/skills/`. Its only skill,
-**gijutsushi-study-guide**, holds the pipeline, data contracts, repo state and
-gotchas, and is imported below so it loads with this file. Paths inside the skill
-(`scripts/…`, `references/…`, `assets/…`) are relative to
-`.codex/skills/gijutsushi-study-guide/`. Do not create copies or links of it under
-`.agents/`, `.claude/` or `.grok/`; those folders are git-ignored on purpose.
+## Setup — do this first, before any other work
 
-@.codex/skills/gijutsushi-study-guide/SKILL.md
+The skills for this repo are stored, and tracked in git, in **`.codex/skills/`**
+(the canonical copy). Each agent reads them through a local directory junction:
+`.agents/skills`, `.claude/skills` and `.grok/skills` all point at `.codex/skills`.
+These links are git-ignored, so **a fresh clone does not have them**.
+
+If any of those three paths is missing, install the links from the repo root:
+
+```
+python -X utf8 .codex/skills/publish-workspace-skills/scripts/publish_skill_links.py --fix
+```
+
+Running it without `--fix` only checks the links. It never deletes or copies
+anything (`--replace` exists, but only after a human has reviewed the conflict).
+If the links cannot be created, read the skill directly from
+`.codex/skills/gijutsushi-study-guide/SKILL.md`.
+
+Then load the skill **gijutsushi-study-guide**. It holds the pipeline, data
+contracts, repo state and gotchas. Always edit skills in `.codex/skills/` and
+never commit `.agents/`, `.claude/skills/` or `.grok/`.
 
 ## Rules
 
@@ -31,11 +44,18 @@ gotchas, and is imported below so it loads with this file. Paths inside the skil
 See `requirements.txt`: Python standard library only (no pip packages), plus XeLaTeX with the listed
 LaTeX packages, the Windows CJK fonts and `pdftoppm`. Check these before running `build.py`.
 
+## Skills
+
+| Skill | Use for |
+|---|---|
+| gijutsushi-study-guide | All work in this repo: extraction, ranking, chapters, PDF build |
+| publish-workspace-skills | Create or check the local skill links after cloning or after adding a skill |
+
 ## Evolving the repo
 
 When a workflow repeats, fold it into the workspace skill (scripts, references,
 assets) following the global **skill-forge** skill. Update the skill's "State of
 the repo" table, bump its version and add a CHANGELOG entry. Record decisions in
 the skill references or `content/outline.md`, not only in chat. New skills for
-this repo also go in `.codex/skills/` and get their own `@…/SKILL.md` import line
-above.
+this repo go in `.codex/skills/`; add them to the Skills table above. The
+existing links pick them up automatically.

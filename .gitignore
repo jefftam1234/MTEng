@@ -15,7 +15,8 @@ __pycache__/
 # Claude Code session state
 .claude/scheduled_tasks.lock
 
-# One skill folder only: .codex/skills (imported from AGENTS.md). No per-agent copies or links.
+# Per-agent skill folders are local junctions to .codex/skills (the tracked copy).
+# Recreate after cloning: python .codex/skills/publish-workspace-skills/scripts/publish_skill_links.py --fix
 .agents/
 .claude/skills/
 .grok/

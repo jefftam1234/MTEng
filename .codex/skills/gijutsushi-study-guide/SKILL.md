@@ -2,7 +2,7 @@
 name: gijutsushi-study-guide
 description: Build and grow the 技術士（化学部門）一次試験 専門科目 study guide in this repo - extract the docx study notes into per-item and per-question Markdown, rank topics by past-exam frequency and the candidate's misses, curate bilingual 中文/日本語 Markdown chapters, and compile the A4 LaTeX printout. Use for any work in this repository, including adding new exam years or notes, re-ranking, writing chapters or rebuilding the PDF.
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Gijutsushi study guide
@@ -89,9 +89,12 @@ Run from the repository root (`S` = `.codex/skills/gijutsushi-study-guide/script
   with argparse, re-runnable output and UTF-8 I/O, and document it here. Then
   bump `metadata.version` and add a CHANGELOG entry (global skills
   skill-forge and skill-maintenance).
-- Skills live only in `.codex/skills/` and load through `@…/SKILL.md` import
-  lines in `AGENTS.md` (which `CLAUDE.md` imports). Never add copies or
-  junctions under `.agents/`, `.claude/` or `.grok/`; they are git-ignored.
+- Skills are tracked only in `.codex/skills/`. `.agents/skills`,
+  `.claude/skills` and `.grok/skills` are local, git-ignored junctions to it.
+  After cloning (or if they go missing) run
+  `python -X utf8 .codex/skills/publish-workspace-skills/scripts/publish_skill_links.py --fix`.
+  Never commit those folders. If a junction ever has to be removed, use
+  `cmd /c rmdir <path>`; a recursive delete can empty the target.
 
 ## Scripts
 
