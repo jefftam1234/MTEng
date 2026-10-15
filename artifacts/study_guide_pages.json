@@ -1,0 +1,80 @@
+{
+  "mode": "full",
+  "pages": 64,
+  "chapters": {
+    "00a": {
+      "title": "應試策略與本書用法",
+      "start": 3,
+      "end": 3,
+      "pages": 1,
+      "budget": 1.0
+    },
+    "00b": {
+      "title": "考前速記",
+      "start": 4,
+      "end": 6,
+      "pages": 3,
+      "budget": 3.0
+    },
+    "01": {
+      "title": "有機化学（有機化學）",
+      "start": 7,
+      "end": 22,
+      "pages": 16,
+      "budget": 16.0
+    },
+    "02": {
+      "title": "高分子",
+      "start": 23,
+      "end": 34,
+      "pages": 12,
+      "budget": 12.0
+    },
+    "03": {
+      "title": "燃料・エネルギー（能源）",
+      "start": 35,
+      "end": 39,
+      "pages": 5,
+      "budget": 4.0
+    },
+    "04": {
+      "title": "無機・セラミックス（陶瓷）・電気化学（電化學）",
+      "start": 40,
+      "end": 45,
+      "pages": 6,
+      "budget": 6.0
+    },
+    "05": {
+      "title": "化学工学（化學工程）・物理化学（物理化學）（計算）",
+      "start": 46,
+      "end": 50,
+      "pages": 5,
+      "budget": 4.0
+    },
+    "06": {
+      "title": "參考：中・日・英對照",
+      "start": 51,
+      "end": 53,
+      "pages": 3,
+      "budget": 3.0
+    },
+    "98": {
+      "title": "過去問索引 H23〜R7",
+      "start": 54,
+      "end": 63,
+      "pages": 10,
+      "budget": null
+    },
+    "99": {
+      "title": "待補主題（目前筆記未涵蓋）",
+      "start": 64,
+      "end": 64,
+      "pages": 1,
+      "budget": 1.0
+    }
+  },
+  "errors": 0,
+  "missing_glyphs": 0,
+  "horizontal_overflow_gt3pt": 0,
+  "vertical_overflow": 0
+}

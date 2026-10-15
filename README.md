@@ -6,10 +6,8 @@ and now sits the exam in Japanese.
 
 ## What this produces
 
-- An A4 two-column PDF of about 50 pages, including reaction schemes,
-  structures and a few schematic graphs.
-- Every term is paired 日本語 ↔ 中文 (with English where useful). Facts are
-  written as ◯/✗ statements in the exam's 「誤っているもの」 style.
+- An A4 two-column PDF at **11pt**, with a user-approved cap of **56 text pages**. Reaction displays, structures, diagrams and the generated question index are additional; the printed PDF is longer than the text proof.
+- Traditional Chinese explanations and reasons, with Japanese chemical names, terms and reaction names paired with Chinese at first use in each numbered section. Japanese exam-statement cells stay Japanese; their first-use gloss appears in the adjacent reason cell. The glossary pairs separate columns. Later mentions need not repeat the gloss.
 - 有機化学 and 高分子 get the most space because they are the weak areas
   (past miss rates about 63% and 70%).
 - The guide ends with an appendix of headings for topics the notes don't yet
@@ -44,28 +42,56 @@ From the repository root, with Python 3:
 python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/docx2md.py source extracted/raw
 python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/extract.py
 python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/report.py
-python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/build.py
+python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/qindex.py
+python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/build.py --text-only
+python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/build.py --png all
 ```
 
-The last command produces `artifacts/study_guide.pdf`. Add `--png all` to also
-get page images in `artifacts/preview/`. If the past-question data changes, run
-`python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/qindex.py` before building.
-What needs to be installed is listed in `requirements.txt` (no Python packages;
-XeLaTeX, the Windows CJK fonts and pdftoppm).
+The text-only command writes `artifacts/study_guide_text_budget.pdf` and its
+`_pages.json`. It omits fenced chemistry/diagram displays, standalone reaction
+displays and the generated index; all explanations, worked examples, captions,
+tables and inline formulas remain charged. Its default cap is 56. The full
+command writes `artifacts/study_guide.pdf`, its `_pages.json`, and page images
+in `artifacts/preview/`. Use the full PDF for printing. The two PDFs have
+separate page numbers. Re-run `qindex.py` after past-question data changes.
+
+The system requirements are listed in `requirements.txt`: Python standard
+library, XeLaTeX and its packages, Windows CJK fonts, and pdftoppm. The build
+fails on LaTeX errors, missing glyphs, horizontal overflow above 3pt, any vertical
+overflow, failed preview rendering, or a text proof over its cap.
 
 ## Status
 
-Version 1 is complete: 50 A4 pages at 11pt in two columns.
+**V1 revised, awaiting the user's print review.** The original 50-page text aim
+was relaxed to 56 to protect depth and readable first-use translations. The
+current chapter allocation is 52 text pages, with four pages of headroom.
+Organic chemistry and polymers include 73 source-linked past-question summary
+boxes, prioritizing repeated topics and R-era misses. These summaries are not
+verbatim reproductions of full exam papers. Reaction names in the glossary
+point to the sections covering them.
 
-| Part | Pages |
-|---|---|
-| Title + contents | 1–2 |
-| Strategy (序) + exam-morning sheet (考前速記) | 3–5 |
-| 第1章 有機化学 | 6–15 |
-| 第2章 高分子 | 16–22 |
-| 第3章 燃料・エネルギー | 23–26 |
-| 第4章 無機・セラミックス・電気化学 | 27–32 |
-| 第5章 化学工学・物理化学（計算） | 33–37 |
-| 第6章 中・日・英 glossary | 38–39 |
-| Past-question index H23–R7 with your results | 40–49 |
-| Gap appendix (topics not yet covered; headings only) | 50 |
+Verified pagination (11pt; text proof retains tables, captions and inline formulas):
+
+| Part | Text budget | Text proof | Print PDF |
+|---|---:|---:|---:|
+| Title / contents | 2 | 2 | 2 |
+| Strategy | 1 | 1 | 1 |
+| Quick reference | 3 | 3 | 3 |
+| Organic chemistry | 16 | 16 | 16 |
+| Polymers | 12 | 12 | 12 |
+| Fuel / energy | 4 | 4 | 5 |
+| Inorganic / ceramics / electrochemistry | 6 | 6 | 6 |
+| Engineering / physical chemistry calculations | 4 | 4 | 5 |
+| Glossary | 3 | 3 | 3 |
+| Generated question index | Exempt | Excluded | 10 |
+| Gap appendix | 1 | 1 | 1 |
+| **Total** | **52 allocated; cap 56** | **52** | **64** |
+
+Validation: both builds exit 0, with no LaTeX errors, missing glyphs,
+horizontal overflow above 3pt or vertical overflow. All 64 print pages were
+visually reviewed; all five existing chemfig schemes were inspected at 250 dpi.
+The question index contains 475 identifiable questions. Skill validation passes.
+These checks do not replace the user's A4 print review.
+
+Detailed pagination is recorded in the generated page reports. This revision
+is committed locally only; the earlier public version has not been updated.

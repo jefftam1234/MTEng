@@ -2,13 +2,13 @@
 name: gijutsushi-study-guide
 description: Build and grow the 技術士（化学部門）一次試験 専門科目 study guide in this repo - extract the docx study notes into per-item and per-question Markdown, rank topics by past-exam frequency and the candidate's misses, curate bilingual 中文/日本語 Markdown chapters, and compile the A4 LaTeX printout. Use for any work in this repository, including adding new exam years or notes, re-ranking, writing chapters or rebuilding the PDF.
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
 ---
 
 # Gijutsushi study guide
 
-This repo turns one candidate's study notes into a printed cram guide of about
-49 A4 pages for the 技術士 化学部門 一次試験 専門科目. The aim is passing the
+This repo turns one candidate's study notes into a printed cram guide of
+at most 56 A4 text pages (figures and generated index extra) for the 技術士 化学部門 一次試験 専門科目. The aim is passing the
 exam, not complete teaching. Read
 [content-conventions.md](references/content-conventions.md) and
 [authoring-syntax.md](references/authoring-syntax.md) before writing content,
@@ -18,7 +18,7 @@ extraction.
 ## Contract
 
 - Inputs: docx notes in `source/` (read-only). Hand-edited sources of truth
-  are `content/*.md` and `latex/` templates/figures.
+  are `content/*.md` (except generated `98_qindex.md`) and `latex/` templates/figures.
 - Outputs: `extracted/` and `artifacts/` (both generated, never hand-edit),
   plus the compiled PDF in `artifacts/`.
 - Side effects: scripts rewrite only their own generated outputs.
@@ -36,10 +36,10 @@ extraction.
 |---|---|
 | Extraction (504 questions H23–R7, 344 items, 116 miss rows) | done |
 | Coverage/priority report | done |
-| Outline with page budget (`content/outline.md`) | v1 approved in principle; 49 p |
-| LaTeX template + build (`latex/`, `build.py`) | done; A4 two-column **11pt** (user approved 10pt, raised to 11pt to reach the ~50 p target without padding), XeLaTeX |
-| Guide v1 | **complete, 50 pages**: 00a 序 strategy, 00b 考前速記, 01–05 chapters (every outline item), 06 glossary, 98 past-question index (generated), 99 gap appendix. Awaiting user review after printing |
-| Published | `origin` = github.com/jefftam1234/MTEng (public; owned by the user, who committed the first two revisions); v1 pushed to `main` |
+| Outline with page budget (`content/outline.md`) | 11pt text plan: 52 allocated, cap 56; organic 16, polymers 12 |
+| LaTeX template + build (`latex/`, `build.py`) | A4 two-column **11pt**, XeLaTeX; separate text proof with cap enforcement and full print build |
+| Guide v1 | **v1 revised; awaiting user print review**. Source-linked organic/polymer practice, first-use term pairing, Chinese reasons, glossary navigation and gap stubs. See generated page reports for current pagination. |
+| Published | Earlier v1 remains on public `origin` (github.com/jefftam1234/MTEng). This 1.5.0 revision is local only; do not push without explicit user authorization. |
 
 ## Pipeline
 
@@ -56,12 +56,12 @@ Run from the repository root (`S` = `.codex/skills/gijutsushi-study-guide/script
    write `content/0N_<slug>.md` in the dialect of authoring-syntax.md.
 5. `python -X utf8 S/qindex.py`: regenerate `content/98_qindex.md` (the
    past-question index; generated, never hand-edit). Needed after step 2.
-6. `python -X utf8 S/build.py --png all`: md2tex → `latex/build/`, two
+6. First run `python -X utf8 S/build.py --text-only` (56-page cap; records `artifacts/study_guide_text_budget.pdf` and `_pages.json`). Then `python -X utf8 S/build.py --png all`: md2tex → `latex/build/`, two
    XeLaTeX passes, `artifacts/study_guide.pdf` and page previews in
    `artifacts/preview/`. It reports pages per chapter against budget, missing
    glyphs, horizontal overflow and **vertical overflow** (a table or box
-   taller than a column), and exits 1 on errors, missing glyphs or vertical
-   overflow. `--chapters "01,02"` builds a subset; quote it in PowerShell.
+   taller than a column), and exits 1 on errors, missing glyphs, horizontal overflow >3pt, any vertical
+   overflow, or preview-renderer failure. Text-only mode also fails above its cap. `--chapters "01,02"` builds a subset; quote it in PowerShell.
 7. **Look at the previews.** For every chemfig structure, render a crop at
    250 dpi (`pdftoppm -r 250 -x -y -W -H`) and check substituent positions
    and stereo. A wrong structure teaches a wrong answer.
@@ -105,7 +105,7 @@ Run from the repository root (`S` = `.codex/skills/gijutsushi-study-guide/script
 | `scripts/report.py` | Block miss rates, item priority ranking, gap scan |
 | `scripts/source_pack.py` | Gather one chapter's items and past-question key lines into a single pack |
 | `scripts/md2tex.py` | Chapter Markdown dialect → LaTeX fragment (also used by build.py) |
-| `scripts/build.py` | Full PDF build, checks, page budget report, PNG previews |
+| `scripts/build.py` | Full print build, separate text-budget proof/cap, JSON page reports, checks and PNG previews |
 | `scripts/qindex.py` | Generate the past-question index chapter from `index_questions.csv` |
 
 Content files: `content/<key>_<slug>.md` where the key orders the book

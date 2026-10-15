@@ -35,7 +35,8 @@ never commit `.agents/`, `.claude/skills/` or `.grok/`.
   agreement.
 - Gap topics stay as headings and stub outlines. Do not fill them from general
   knowledge unless the user asks.
-- Keep the 日本語 ↔ 中文 pairing for every chemical name, term and reaction name.
+- Use Traditional Chinese explanations and reasons. At first use in each numbered section, pair Japanese chemical names, terms and reaction names with a Chinese gloss, including table cells. Keep Japanese exam-statement cells unchanged; place their first-use gloss in the adjacent reason cell. Glossary columns may provide the pairing; later repetitions need not repeat it.
+- The user-approved cap is **56 text pages at 11pt**, excluding reaction displays, figures and the generated index. Use `build.py --text-only` to measure it, then rebuild the full print PDF. See `content/outline.md` for allocations and conservative counting rules.
 - Run Python with `-X utf8`. Do not write files with Windows PowerShell 5.1
   `Set-Content`/`Out-File` (BOM).
 

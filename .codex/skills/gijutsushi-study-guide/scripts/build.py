@@ -10,11 +10,13 @@ Steps:
   4. Check the log: errors, missing glyphs ("Missing character"), overfull boxes; report pages per
      chapter against each file's <!-- budget: N --> comment.
   5. Copy the PDF to artifacts/study_guide.pdf; with --png, render pages to artifacts/preview/.
-Exit code 1 on LaTeX errors or missing glyphs.
+Exit code 1 on LaTeX errors, missing glyphs, horizontal overflow >3pt,
+any vertical overflow, preview failure, or a text proof above its page cap.
 """
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -39,6 +41,8 @@ def main() -> int:
     p.add_argument("--chapters", default="", help="comma list of chapter prefixes to include, e.g. 01,02 (default all)")
     p.add_argument("--png", default="", help="page range to render as PNG previews, e.g. 1-6 or 'all'")
     p.add_argument("--dpi", type=int, default=110, help="preview resolution")
+    p.add_argument("--text-only", action="store_true", help="budget proof: omit fenced chem/tikz figures, standalone reaction equations and generated question index; keep explanatory text/tables")
+    p.add_argument("--text-page-cap", type=int, default=56, help="maximum total pages for --text-only (default 56, user-approved cap)")
     a = p.parse_args()
 
     latex, content = a.repo / "latex", a.repo / "content"
@@ -51,7 +55,8 @@ def main() -> int:
 
     wanted = [c.strip() for c in a.chapters.split(",") if c.strip()]
     sources = sorted(f for f in content.glob("[0-9][0-9]*_*.md")
-                     if not wanted or f.name.split("_")[0] in wanted)
+                     if (not wanted or f.name.split("_")[0] in wanted)
+                     and not (a.text_only and f.name.startswith("98_")))
     if not sources:
         print("error: no content/NN_*.md chapters found", file=sys.stderr)
         return 1
@@ -61,7 +66,13 @@ def main() -> int:
     for src in sources:
         nn = src.name.split("_")[0]
         label = f"第{int(nn)}章" if nn.isdigit() else nn
-        tex, meta = md2tex.convert(src.read_text(encoding="utf-8"), label)
+        markdown = src.read_text(encoding="utf-8")
+        if a.text_only:
+            markdown = re.sub(r"^```(?:chem|tikz)\s*\n.*?^```\s*$", "", markdown, flags=re.M | re.S)
+            # Only standalone reaction displays are exempt. Inline equations,
+            # formula tables, captions and all explanations remain charged.
+            markdown = re.sub(r"^\\ce\{[^\n]+(?:->|<=>)[^\n]+\}\s*$", "", markdown, flags=re.M)
+        tex, meta = md2tex.convert(markdown, label)
         first, _, rest = tex.partition("\n")
         if first.startswith("\\chapterbanner"):
             tex = f"{first}\n\\label{{ch{nn}-start}}\n{rest}\\label{{ch{nn}-end}}\n"
@@ -81,7 +92,7 @@ def main() -> int:
     missing = sorted(set(re.findall(r"Missing character: There is no (\S+) in font ([^/\n]+)", log)))
     overfull = re.findall(r"Overfull \\hbox \((\d+\.?\d*)pt too wide\)", log)
     big_over = [float(x) for x in overfull if float(x) > 3]
-    vover = [float(x) for x in re.findall(r"Overfull \\vbox \((\d+\.?\d*)pt too high\)", log) if float(x) > 3]
+    vover = [float(x) for x in re.findall(r"Overfull \\vbox \((\d+\.?\d*)pt too high\)", log)]
     pages = re.search(r"Output written on .*?\((\d+)\s+pag", log, re.S)
 
     print(f"xelatex: {'OK' if r.returncode == 0 else 'FAILED'}; pages: {pages.group(1) if pages else '?'}")
@@ -96,31 +107,45 @@ def main() -> int:
 
     aux = (build / "main.aux").read_text(encoding="utf-8", errors="replace") if (build / "main.aux").exists() else ""
     labels = {m.group(1): int(m.group(2)) for m in re.finditer(r"\\newlabel\{(ch\w+-(?:start|end))\}\{\{[^}]*\}\{(\d+)\}", aux)}
+    page_report = {}
     for nn, (title, budget) in budgets.items():
         s, e = labels.get(f"ch{nn}-start"), labels.get(f"ch{nn}-end")
         if s and e:
             used = e - s + 1
-            flag = "" if budget is None else (" OVER" if used > budget + 0.5 else "")
-            print(f"chapter {nn} {title}: pages {s}-{e} = {used}" + (f" (budget {budget:g}){flag}" if budget else ""))
+            flag = " OVER" if a.text_only and budget is not None and used > budget + 0.5 else ""
+            print(f"chapter {nn} {title}: pages {s}-{e} = {used}" +
+                  (f" (text budget {budget:g}){flag}" if budget else ""))
+            page_report[nn] = dict(title=title, start=s, end=e, pages=used, budget=budget)
 
     pdf = build / "main.pdf"
     if r.returncode == 0 and pdf.exists():
-        dst = a.repo / "artifacts" / "study_guide.pdf"
+        stem = "study_guide_text_budget" if a.text_only else "study_guide"
+        dst = a.repo / "artifacts" / f"{stem}.pdf"
         dst.parent.mkdir(exist_ok=True)
         try:
             shutil.copyfile(pdf, dst)
             print(f"pdf: {dst}")
         except PermissionError:
             print(f"pdf: {pdf} (artifacts copy locked by a viewer)")
+        report = dict(mode="text-only" if a.text_only else "full", pages=int(pages.group(1)) if pages else None,
+                      chapters=page_report, errors=len(errors), missing_glyphs=len(missing),
+                      horizontal_overflow_gt3pt=len(big_over), vertical_overflow=len(vover))
+        (dst.parent / f"{stem}_pages.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         if a.png:
             prev = a.repo / "artifacts" / "preview"
             prev.mkdir(exist_ok=True)
             for old in prev.glob("*.png"):
                 old.unlink()
             rng = [] if a.png == "all" else ["-f", a.png.split("-")[0], "-l", a.png.split("-")[-1]]
-            subprocess.run(["pdftoppm", "-png", "-r", str(a.dpi), *rng, str(pdf), str(prev / "p")], check=False)
+            preview_result = subprocess.run(["pdftoppm", "-png", "-r", str(a.dpi), *rng, str(pdf), str(prev / "p")], check=False)
+            if preview_result.returncode != 0:
+                print("error: pdftoppm preview rendering failed", file=sys.stderr)
+                return 1
             print(f"previews: {prev}")
-    return 0 if r.returncode == 0 and not missing and not vover else 1
+    over_cap = a.text_only and pages is not None and int(pages.group(1)) > a.text_page_cap
+    if a.text_only and pages:
+        print(f"text budget: {pages.group(1)}/{a.text_page_cap} pages" + (" OVER CAP" if over_cap else " OK"))
+    return 0 if r.returncode == 0 and not errors and not missing and not vover and not big_over and not over_cap else 1
 
 
 if __name__ == "__main__":

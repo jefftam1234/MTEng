@@ -13,11 +13,10 @@ here; anything else is printed as plain text.
   columns. Split long ones and repeat the header row.
 - First lines:
   ```
-  <!-- budget: 13 -->
+  <!-- budget: 16 -->
   # 有機化学 | Q1–Q7 ・ 失分率 63% ・ 弱項
   ```
-  The `budget` value is the page target. `build.py` reports actual pages
-  against it. Text after `|` in the title is the banner subtitle.
+  The `budget` value is the text-page target at 11pt. `build.py --text-only` reports charged pages against it; the full build reports physical pages and labels the target as a text budget. Text after `|` in the title is the banner subtitle.
 
 ## Blocks
 

@@ -10,13 +10,13 @@ most pages. The guide is printed and read on paper.
 
 ## Size and structure (agreed 2026-10-15)
 
-- About 50 A4 pages, two columns at **11pt** (decided 2026-10-15: 9pt gave 7
-  pages for chapter 1 and was too dense to print; the user approved 10pt; 11pt
-  plus the generated past-question index reached 50 pages without padding).
+- The original aim was at most 50 text pages, excluding reaction equations, structures and diagrams. After the expanded bilingual draft measured 56, the user explicitly relaxed the cap to **56 text pages**. Keep A4, two columns, **11pt**. The full physical print count is longer because figures and the generated question index are outside the cap.
+- The recalibrated plan allocates 52 text pages with four pages of headroom; organic chemistry has 16 and polymers 12. The three-page quick sheet replaces the older two-page description. Do not pad to the cap.
+- Count using `build.py --text-only`; it removes fenced chem/tikz figures, standalone reaction displays and chapter 98. Captions, tables, worked reasoning and inline equations remain charged. The result is conservative, reproducible pagination, not an estimate obtained by subtracting guessed figure areas.
 - The live plan is `content/outline.md`: chapters by exam block, per-section
   page budgets, and item ids with treatment levels. Update it when priorities
   change.
-- Front matter has a strategy page and a 2-page 考前速記 sheet (written last,
+- Front matter has a strategy page and a 3-page 考前速記 sheet (written last,
   from all 一句速記 lines and 失點紀錄 對策). Back matter has a 中/日/英
   glossary and the gap appendix (headings and stub outlines only, no
   invented content).
@@ -33,16 +33,14 @@ most pages. The guide is printed and read on paper.
 
 ## Writing rules
 
-- Japanese exam wording comes first, with the Chinese gloss smaller. Chemical
-  names and reaction names always appear as 日文 + 中文 (+ English when the
-  source has it).
+- Explanations and reason cells use Traditional Chinese. Japanese chemical names, terms and reaction names receive a Chinese gloss at first use in each numbered section, including tables. Japanese exam-statement cells stay Japanese; their first-use gloss goes in the adjacent reason cell. Separate glossary columns also count as pairing. Do not repeat glosses on every later occurrence. Raw figure labels and formula-only symbols are outside this prose convention.
 - Write facts as ◯ (true) / ✗ (trap) statements in the exam's 誤っているもの
-  style. Every ✗ states the wrong version the exam actually uses.
+  style. Distinguish exact source wording from practice statements reconstructed from source notes; never claim a summary is a verbatim exam quotation.
 - Trap tables put the answer in the right-hand column (fold-to-quiz).
 - Graphs only where a question asks about the shape of a curve. Planned graphs
   are listed per chapter in the outline.
 - Energy statistics and policy numbers are tagged 「最新値を確認」.
-- Every chapter section cites its item ids in a comment so it can be traced
+- Every chapter section cites its item ids in heading tags so it can be traced
   back to `extracted/items/`.
 
 ## Rendering

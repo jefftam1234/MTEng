@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.0 - 2026-10-15
+
+- Authorized reconciliation of depth, page accounting, bilingual usage, reaction-index navigation and stale status. The user subsequently relaxed the original 50-text-page aim to a 56-text-page cap; diagrams, reaction displays and the generated index remain outside it. Retained A4 two-column 11pt.
+- Deepened organic chemistry and polymers with 37 and 36 source-pack question-summary boxes, R-era miss-log fixes, additional Japanese statement/Chinese-reason tables and worked reasoning. Added source-tagged reaction displays; the five existing chemfig blocks are byte-identical. The summaries are explicitly labelled as note summaries, not verbatim exam papers.
+- Rewrote explanatory prose in Traditional Chinese, added first-use Japanese/Chinese term pairing in numbered sections and table cells, kept Japanese statement cells intact, supplied Chinese glossary explanations and section navigation for all 38 reaction-index entries.
+- Recalibrated outline/metadata budgets, fixed section arithmetic and generated-file ownership, reconciled README/AGENTS/conventions, and changed state to revised/awaiting print review. Earlier public v1 remains unchanged; this revision is local only.
+- build.py adds --text-only and --text-page-cap (default 56), a separate conservative text proof, JSON page reports, horizontal-overflow failure (>3pt), failure on any vertical overflow and preview-renderer failure. All tables and inline equations remain charged. Existing normal-build invocation is compatible; callers with previously ignored overflow will now fail correctly.
+- Validation executed: qindex.py exit 0 (475 indexed questions); text proof exit 0, 52/56 pages, zero errors/missing glyphs/horizontal overflow >3pt/vertical overflow. Verified all 73 added question IDs in the corresponding packs, all 38 index section destinations, unchanged chemfig blocks, heading source tags and every section-budget sum. Full build.py --png all exit 0: 64 physical pages, zero LaTeX errors/missing glyphs/horizontal overflow >3pt/vertical overflow. Visually reviewed all 64 preview pages and all five existing chemfig schemes in pdftoppm 250-dpi crops (positions/stereo checked). Global skill-forge check_skill.py --run-help passes for version 1.5.0. User A4 print review remains pending.
+
 ## 1.4.0 - 2026-10-15
 
 - User clarified the intended design: keep the junction-maintained per-agent skill directories locally, but do not upload them. Restored the `.agents/skills`, `.claude/skills` and `.grok/skills` junctions and the `publish-workspace-skills` installer, byte-identical to the VDT copy. The junction folders stay git-ignored.
