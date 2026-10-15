@@ -39,7 +39,7 @@ extraction.
 | Outline with page budget (`content/outline.md`) | v1 approved in principle; 49 p |
 | LaTeX template + build (`latex/`, `build.py`) | done; A4 two-column **11pt** (user approved 10pt, raised to 11pt to reach the ~50 p target without padding), XeLaTeX |
 | Guide v1 | **complete, 50 pages**: 00a 序 strategy, 00b 考前速記, 01–05 chapters (every outline item), 06 glossary, 98 past-question index (generated), 99 gap appendix. Awaiting user review after printing |
-| Published | remote `jefftam1234/MTEng` is **public** (created by the user); the v1 commit is staged, and the commit/push await user approval |
+| Published | `origin` = github.com/jefftam1234/MTEng (public; owned by the user, who committed the first two revisions); v1 pushed to `main` |
 
 ## Pipeline
 
