@@ -1,0 +1,16 @@
+% Study guide master file (copied to latex/ by build.py if absent; edit the copy in latex/).
+% Chapters are generated from content/NN_*.md into build/chapters.tex by build.py.
+\documentclass[9pt,twocolumn]{extarticle}
+\input{preamble.tex}
+
+\begin{document}
+\twocolumn[{%
+  \begin{center}
+    {\sffamily\bfseries\Huge 技術士（化学部門）一次試験}\\[4pt]
+    {\sffamily\bfseries\Large 専門科目　考前精讀本　\jas{日本語}・中文對照}\\[6pt]
+    {\small 試題 H23–R7（504 題）× 個人失分紀錄 → 依得分機率排序}
+  \end{center}
+  \vspace{4pt}}]
+\tableofcontents
+\input{build/chapters.tex}
+\end{document}

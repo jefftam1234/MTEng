@@ -1,0 +1,118 @@
+% Study-guide preamble (copied to latex/ by build.py if absent; edit the copy in latex/).
+% Fonts are Windows system fonts; on other systems substitute Noto Serif/Sans TC and JP.
+\usepackage[a4paper,top=13mm,bottom=15mm,left=11mm,right=11mm,columnsep=6mm,headsep=3mm,headheight=10pt,footskip=7mm]{geometry}
+\setlength{\columnseprule}{0.2pt}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Consolas}[Scale=0.9]
+\usepackage{xeCJK}
+\xeCJKsetup{CJKspace=true}
+% circled numbers, geometric shapes, stars: take them from the CJK fonts, not Times
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"25A0->"25FF,"2600->"26FF,"3000->"303F}
+\tracinglostchars=2
+\setCJKmainfont{PMingLiU}[BoldFont=Microsoft JhengHei Bold]
+\setCJKsansfont{Microsoft JhengHei}[BoldFont=Microsoft JhengHei Bold]
+\setCJKmonofont{Microsoft JhengHei}
+\setCJKfamilyfont{jarm}{MS Mincho}[BoldFont=Yu Gothic Bold]
+\setCJKfamilyfont{jasf}{Yu Gothic Medium}[BoldFont=Yu Gothic Bold]
+\setCJKfallbackfamilyfont{\CJKrmdefault}{MS Mincho}
+\setCJKfallbackfamilyfont{\CJKsfdefault}{Yu Gothic Medium}
+\setCJKfallbackfamilyfont{jarm}{PMingLiU}
+\setCJKfallbackfamilyfont{jasf}{Microsoft JhengHei}
+\newcommand{\ja}[1]{{\CJKfamily{jarm}#1}}
+\newcommand{\jas}[1]{{\CJKfamily{jasf}#1}}
+\linespread{1.12}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt plus 1pt}
+\raggedbottom
+
+\usepackage[version=4]{mhchem}
+\usepackage{chemfig}
+\setchemfig{atom sep=1.7em,bond offset=1pt,double bond sep=2.2pt,arrow coeff=0.8,compound sep=3.2em,arrow offset=4pt}
+\usepackage{pgfplots}\pgfplotsset{compat=1.18}
+\usepackage{adjustbox}
+\usepackage{xcolor,colortbl}
+\usepackage{tabularx,booktabs,array}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{newunicodechar}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+
+% ---- colours (chosen to stay distinct in grayscale) ----
+\definecolor{accent}{HTML}{1F4E79}
+\definecolor{trapc}{HTML}{B03A2E}
+\definecolor{keyc}{HTML}{1F6FA8}
+\definecolor{memoc}{HTML}{555555}
+\definecolor{thead}{HTML}{E4E9EF}
+\definecolor{tagc}{HTML}{8A8A8A}
+
+% ---- glyphs missing from Times New Roman ----
+\newunicodechar{⇌}{\ensuremath{\rightleftharpoons}}
+\newunicodechar{⇄}{\ensuremath{\rightleftarrows}}
+\newunicodechar{⇒}{\ensuremath{\Rightarrow}}
+\newunicodechar{⇐}{\ensuremath{\Leftarrow}}
+\newunicodechar{⇔}{\ensuremath{\Leftrightarrow}}
+\newunicodechar{≫}{\ensuremath{\gg}}
+\newunicodechar{≪}{\ensuremath{\ll}}
+\newunicodechar{∝}{\ensuremath{\propto}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∴}{\ensuremath{\therefore}}
+\newunicodechar{≒}{\ensuremath{\fallingdotseq}}
+\newunicodechar{⁄}{/}
+
+% ---- exam marks ----
+\newcommand{\maru}{\textcolor{keyc}{{\CJKfamily{jarm}\mdseries ◯}}}
+\newcommand{\batsu}{\textcolor{trapc}{\textbf{×}}}
+\newcommand{\hl}[1]{\textcolor{accent}{\textbf{#1}}}
+\newcommand{\sepline}{\par\vspace{2pt}{\color{tagc}\rule{\linewidth}{0.3pt}}\par\vspace{2pt}}
+
+% ---- headings ----
+\newcommand{\currentchapter}{}
+\newcommand{\chapterbanner}[3]{%
+  \twocolumn[{%
+    \renewcommand{\currentchapter}{第#1章\ #2}%
+    \begin{tcolorbox}[colback=accent,colframe=accent,coltext=white,arc=0pt,boxrule=0pt,left=6pt,top=4pt,bottom=4pt]
+      {\sffamily\bfseries\LARGE 第#1章\quad #2}\hfill{\sffamily\small #3}
+    \end{tcolorbox}\vspace{2pt}}]%
+  \gdef\currentchapter{第#1章\ #2}%
+  \addcontentsline{toc}{section}{第#1章\quad #2}}
+\usepackage{needspace}
+\newcommand{\secthead}[2]{\par\needspace{8\baselineskip}\vspace{5pt plus 2pt}%
+  \noindent{\sffamily\bfseries\large\color{accent}#1}\hfill{\scriptsize\color{tagc}#2}\par
+  \vspace{-2pt}{\color{accent}\rule{\linewidth}{0.8pt}}\par\vspace{1pt}%
+  \addcontentsline{toc}{subsection}{#1}}
+\newcommand{\subsecthead}[2]{\par\needspace{6\baselineskip}\vspace{3pt plus 1pt}%
+  \noindent{\sffamily\bfseries\normalsize\color{accent}\rule[-0.15em]{2.2pt}{0.95em}\hspace{3pt}#1}\hfill{\scriptsize\color{tagc}#2}\par\vspace{1pt}}
+\newcommand{\minihead}[2]{\par\vspace{1pt}\noindent{\sffamily\bfseries #1}\quad}
+
+% ---- boxes ----
+\tcbset{gbox/.style={breakable,enhanced,arc=1pt,boxrule=0.5pt,left=3pt,right=3pt,top=2pt,bottom=2pt,
+  before skip=3pt,after skip=3pt,fonttitle=\sffamily\bfseries\small,toptitle=1pt,bottomtitle=1pt}}
+\newtcolorbox{trapbox}[1]{gbox,colframe=trapc,colback=trapc!5,coltitle=white,colbacktitle=trapc,title={陷阱\ifx\relax#1\relax\else\ ｜ #1\fi}}
+\newtcolorbox{keybox}[1]{gbox,colframe=keyc,colback=keyc!5,coltitle=white,colbacktitle=keyc,title={要點\ifx\relax#1\relax\else\ ｜ #1\fi}}
+\newtcolorbox{memobox}[1]{gbox,colframe=memoc,colback=black!4,coltitle=white,colbacktitle=memoc,title={一句速記\ifx\relax#1\relax\else\ ｜ #1\fi}}
+\newtcolorbox{exambox}[1]{gbox,colframe=accent,colback=white,coltitle=accent,colbacktitle=thead,title={過去問\ifx\relax#1\relax\else\ ｜ #1\fi}}
+\newenvironment{figblock}{\par\smallskip\begin{center}\begin{adjustbox}{max width=\linewidth}}{\end{adjustbox}\end{center}\smallskip}
+
+% ---- tables ----
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newenvironment{gtable}[1]{\par\smallskip\footnotesize\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{2.5pt}%
+  \noindent\tabularx{\linewidth}{#1}\toprule}{\bottomrule\endtabularx\par\smallskip}
+
+% ---- lists ----
+\setlist{nosep,leftmargin=1.1em,labelsep=0.3em}
+\setlist[itemize]{label=\textcolor{accent}{•}}
+\setlist[itemize,2]{label=\textcolor{accent}{–}}
+
+\renewcommand{\contentsname}{目錄}
+\setcounter{tocdepth}{2}
+
+% ---- header / footer ----
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\scriptsize\sffamily\color{tagc}技術士（化学部門）一次試験　専門科目}
+\fancyhead[R]{\scriptsize\sffamily\color{tagc}\currentchapter}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
