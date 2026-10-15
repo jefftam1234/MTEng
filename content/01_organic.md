@@ -437,7 +437,7 @@ o-クロロアニソール → m-アニシジン：ベンザインは C–Cl と
 
 ```chem
 \schemestart
-\chemfig{H_2C=C(-[2]CH_3)-C(-[2]CH_3)=CH_2}
+\chemfig{H_2C=C(-[:120]CH_3)-C(-[:60]CH_3)=CH_2}
 \+
 \chemfig{C(-[:150,,,3]MeO_2C)(-[:210]H)=C(-[:30]CO_2Me)(-[:-30]H)}
 \arrow{->[$\Delta$]}

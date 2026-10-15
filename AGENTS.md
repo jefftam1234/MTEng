@@ -22,6 +22,11 @@ standing rules.
 - Run Python with `-X utf8`. Do not write files with Windows PowerShell 5.1
   `Set-Content`/`Out-File` (BOM).
 
+## Requirements
+
+See `requirements.txt`: Python standard library only (no pip packages), plus XeLaTeX with the listed
+LaTeX packages, the Windows CJK fonts and `pdftoppm`. Check these before running `build.py`.
+
 ## Skills
 
 | Skill | Use for |

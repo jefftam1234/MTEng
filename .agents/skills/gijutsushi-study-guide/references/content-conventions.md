@@ -10,8 +10,9 @@ most pages. The guide is printed and read on paper.
 
 ## Size and structure (agreed 2026-10-15)
 
-- About 49 A4 pages of text, two columns at 9pt. Reaction schemes, structures
-  and graphs do not count toward the budget.
+- About 50 A4 pages, two columns at **11pt** (decided 2026-10-15: 9pt gave 7
+  pages for chapter 1 and was too dense to print; the user approved 10pt; 11pt
+  plus the generated past-question index reached 50 pages without padding).
 - The live plan is `content/outline.md`: chapters by exam block, per-section
   page budgets, and item ids with treatment levels. Update it when priorities
   change.

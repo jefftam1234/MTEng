@@ -6,8 +6,8 @@ and now sits the exam in Japanese.
 
 ## What this produces
 
-- An A4 two-column PDF of about 49 pages of text, plus reaction schemes,
-  structures and a few graphs (these don't count toward the page budget).
+- An A4 two-column PDF of about 50 pages, including reaction schemes,
+  structures and a few schematic graphs.
 - Every term is paired 日本語 ↔ 中文 (with English where useful). Facts are
   written as ◯/✗ statements in the exam's 「誤っているもの」 style.
 - 有機化学 and 高分子 get the most space because they are the weak areas
@@ -47,12 +47,25 @@ python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/report.py
 python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/build.py
 ```
 
-The last command produces `artifacts/study_guide.pdf` (it needs XeLaTeX and
-the Windows CJK fonts). Add `--png all` to also get page images in
-`artifacts/preview/`.
+The last command produces `artifacts/study_guide.pdf`. Add `--png all` to also
+get page images in `artifacts/preview/`. If the past-question data changes, run
+`python -X utf8 .codex/skills/gijutsushi-study-guide/scripts/qindex.py` before building.
+What needs to be installed is listed in `requirements.txt` (no Python packages;
+XeLaTeX, the Windows CJK fonts and pdftoppm).
 
 ## Status
 
-Chapter 1 (有機化学) is written and typeset as the layout sample. The other
-four exam blocks, the exam-morning sheet, the glossary and the gap appendix
-are still to come.
+Version 1 is complete: 50 A4 pages at 11pt in two columns.
+
+| Part | Pages |
+|---|---|
+| Title + contents | 1–2 |
+| Strategy (序) + exam-morning sheet (考前速記) | 3–5 |
+| 第1章 有機化学 | 6–15 |
+| 第2章 高分子 | 16–22 |
+| 第3章 燃料・エネルギー | 23–26 |
+| 第4章 無機・セラミックス・電気化学 | 27–32 |
+| 第5章 化学工学・物理化学（計算） | 33–37 |
+| 第6章 中・日・英 glossary | 38–39 |
+| Past-question index H23–R7 with your results | 40–49 |
+| Gap appendix (topics not yet covered; headings only) | 50 |

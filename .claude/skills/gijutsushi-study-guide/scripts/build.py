@@ -81,6 +81,7 @@ def main() -> int:
     missing = sorted(set(re.findall(r"Missing character: There is no (\S+) in font ([^/\n]+)", log)))
     overfull = re.findall(r"Overfull \\hbox \((\d+\.?\d*)pt too wide\)", log)
     big_over = [float(x) for x in overfull if float(x) > 3]
+    vover = [float(x) for x in re.findall(r"Overfull \\vbox \((\d+\.?\d*)pt too high\)", log) if float(x) > 3]
     pages = re.search(r"Output written on .*?\((\d+)\s+pag", log, re.S)
 
     print(f"xelatex: {'OK' if r.returncode == 0 else 'FAILED'}; pages: {pages.group(1) if pages else '?'}")
@@ -89,6 +90,9 @@ def main() -> int:
     for ch, font in missing[:40]:
         print(f"MISSING glyph {ch!r} ({hex(ord(ch[0])) if ch else ''}) in {font}")
     print(f"overfull boxes: {len(overfull)} (>3pt: {len(big_over)}, max {max(big_over, default=0):.1f}pt)")
+    if vover:
+        print(f"VERTICAL OVERFLOW: {len(vover)} box(es) run off the page (max {max(vover):.0f}pt) - "
+              "split long tables or boxes")
 
     aux = (build / "main.aux").read_text(encoding="utf-8", errors="replace") if (build / "main.aux").exists() else ""
     labels = {m.group(1): int(m.group(2)) for m in re.finditer(r"\\newlabel\{(ch\w+-(?:start|end))\}\{\{[^}]*\}\{(\d+)\}", aux)}
@@ -116,7 +120,7 @@ def main() -> int:
             rng = [] if a.png == "all" else ["-f", a.png.split("-")[0], "-l", a.png.split("-")[-1]]
             subprocess.run(["pdftoppm", "-png", "-r", str(a.dpi), *rng, str(pdf), str(prev / "p")], check=False)
             print(f"previews: {prev}")
-    return 0 if r.returncode == 0 and not missing else 1
+    return 0 if r.returncode == 0 and not missing and not vover else 1
 
 
 if __name__ == "__main__":

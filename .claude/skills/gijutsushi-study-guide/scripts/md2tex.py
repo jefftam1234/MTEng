@@ -54,7 +54,24 @@ def plain(text: str, ja: str) -> str:
     return "".join(out)
 
 
+SUBSCRIPT = re.compile(r"(?<=[A-Za-z0-9)\]°%Δγηλμσρφαε*′'])_(\{[^}]{1,16}\}|[A-Za-z0-9]{1,6})")
+
+
 def escape(s: str) -> str:
+    """Escape LaTeX specials; ASCII `X_sub` / `X_{sub}` become real subscripts."""
+    parts = SUBSCRIPT.split(s)
+    if len(parts) > 1:
+        out = []
+        for k, part in enumerate(parts):
+            if k % 2:
+                out.append(r"\textsubscript{" + _escape_plain(part.strip("{}")) + "}")
+            else:
+                out.append(_escape_plain(part))
+        return "".join(out)
+    return _escape_plain(s)
+
+
+def _escape_plain(s: str) -> str:
     s = "".join(ESC.get(c, c) for c in s)
     s = s.replace("◯", r"\maru{}").replace("✗", r"\batsu{}").replace("✕", r"\batsu{}")
     s = s.replace("✓", r"\ensuremath{\checkmark}").replace("✔", r"\ensuremath{\checkmark}")
@@ -106,7 +123,7 @@ def split_heading(text: str) -> tuple[str, str]:
     m = re.match(r"^(.*?)\s*\{([FST]\d+(?:\s+[FST]\d+)*)\}\s*$", text)
     if not m:
         return text, ""
-    return m.group(1), r"\,".join(tag_label(t) for t in m.group(2).split())
+    return m.group(1), r"\,\allowbreak ".join(tag_label(t) for t in m.group(2).split())
 
 
 def cells(line: str) -> list[str]:
@@ -124,12 +141,22 @@ def table(rows: list[str], spec: str | None) -> str:
     if spec:
         cols = spec.split()
     else:
-        cols = []
+        cols, weights = [], {}
         for j in range(n):
-            longest = max(len(r[j]) for r in [head] + body)
-            cols.append("c" if longest <= 4 else ("l" if longest <= 8 else "X"))
-        if "X" not in cols:
-            cols[max(range(n), key=lambda j: max(len(r[j]) for r in [head] + body))] = "X"
+            lengths = [len(r[j]) for r in [head] + body]
+            if max(lengths) <= 4:
+                cols.append("c")
+            elif max(lengths) <= 8 and n >= 3:
+                cols.append("l")
+            else:
+                cols.append("X")
+                weights[j] = max(1.0, sum(lengths) / len(lengths)) ** 0.5
+        if not weights:
+            j = max(range(n), key=lambda k: max(len(r[k]) for r in [head] + body))
+            cols[j], weights[j] = "X", 1.0
+        total = sum(weights.values())
+        for j, w in weights.items():
+            cols[j] = f"X:{w * len(weights) / total:.3f}"
     def col(c: str) -> str:
         if c.startswith("X:"):
             return f">{{\\hsize={c[2:]}\\hsize}}Y"

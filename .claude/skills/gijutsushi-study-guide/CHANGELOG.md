@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.2.0 - 2026-10-15
+
+- Completed guide v1 at the user's request ("go with your suggestion, and give me the full doc, then commit and push"): chapters 02–05, strategy (00a), 考前速記 (00b), glossary (06), past-question index (98, generated) and gap appendix (99). The result is 50 pages.
+- New script: qindex.py (past-question index from index_questions.csv, chunked to 24 rows per table).
+- build.py: content keys like 00a/00b/98; non-numeric keys use a `<!-- label: … -->` banner; vertical-overflow detection fails the build.
+- md2tex.py:
+  - Banner label override.
+  - ASCII subscripts (`V_m`).
+  - Proportional automatic column widths.
+  - Mismatched `cols` specs are ignored with a warning.
+  - `{}` guard so a table cell starting with `[` is not read as a spacing argument.
+  - `\item{}` guard so a list item starting with `[` keeps its brackets.
+  - Section tags can wrap.
+- Template: 11pt; xeCJK `AutoFallBack=true`; ※ routed to CJK fonts; TikZ positioning library; ⊃ ⊂ ∈ ∞ mapped to math.
+- Repo: requirements.txt (stdlib only, plus system requirements).
+- Contract impact: compatible additions. Content file naming is widened (still numeric-prefixed), and the output now has 50 pages.
+- Validation (executed):
+  - Full build: 50 pages, 0 errors, 0 missing glyphs, 0 overflow (>3pt), 0 vertical overflow.
+  - Two vertical overflows were caught by the new check and fixed: the index table and the glossary table.
+  - Previews inspected for pages 1, 3, 4, 9–12, 24, 38, 40.
+  - Chemfig structures re-verified at 250 dpi: sulfanilic route, Diels–Alder product (cis esters, C=C between the methyl-bearing carbons), and both hydration products. The p-toluic acid bromination and benzyne schemes are unchanged since 1.1.0.
+  - Subscript conversion unit-checked.
+- Limitation: chemistry content was checked against the source notes by the author only; the user has not yet reviewed it.
+
 ## 1.1.0 - 2026-10-15
 
 - User approved building the LaTeX template and the 有機化学 sample chapter ("let's do it").

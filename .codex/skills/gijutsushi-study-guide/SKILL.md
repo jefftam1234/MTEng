@@ -2,7 +2,7 @@
 name: gijutsushi-study-guide
 description: Build and grow the 技術士（化学部門）一次試験 専門科目 study guide in this repo - extract the docx study notes into per-item and per-question Markdown, rank topics by past-exam frequency and the candidate's misses, curate bilingual 中文/日本語 Markdown chapters, and compile the A4 LaTeX printout. Use for any work in this repository, including adding new exam years or notes, re-ranking, writing chapters or rebuilding the PDF.
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Gijutsushi study guide
@@ -37,9 +37,9 @@ extraction.
 | Extraction (504 questions H23–R7, 344 items, 116 miss rows) | done |
 | Coverage/priority report | done |
 | Outline with page budget (`content/outline.md`) | v1 approved in principle; 49 p |
-| LaTeX template + build (`latex/`, `build.py`) | done; A4 two-column 9pt, XeLaTeX |
-| `01_organic.md` 有機化学 | v1 written (all 74 outline items): 7 p against a 13 p budget; awaiting user review of layout and density |
-| Chapters 02–05, 考前速記, strategy, glossary, gap appendix | pending (考前速記 is written last) |
+| LaTeX template + build (`latex/`, `build.py`) | done; A4 two-column **11pt** (user approved 10pt, raised to 11pt to reach the ~50 p target without padding), XeLaTeX |
+| Guide v1 | **complete, 50 pages**: 00a 序 strategy, 00b 考前速記, 01–05 chapters (every outline item), 06 glossary, 98 past-question index (generated), 99 gap appendix. Awaiting user review after printing |
+| Published | remote `jefftam1234/MTEng` is **public** (created by the user); the v1 commit is staged, and the commit/push await user approval |
 
 ## Pipeline
 
@@ -54,12 +54,15 @@ Run from the repository root (`S` = `.codex/skills/gijutsushi-study-guide/script
    which holds every outline item of chapter N in full plus the block's
    per-question key lines and 失點紀錄 rows. Read the whole pack, then
    write `content/0N_<slug>.md` in the dialect of authoring-syntax.md.
-5. `python -X utf8 S/build.py --png all`: md2tex → `latex/build/`, two
+5. `python -X utf8 S/qindex.py`: regenerate `content/98_qindex.md` (the
+   past-question index; generated, never hand-edit). Needed after step 2.
+6. `python -X utf8 S/build.py --png all`: md2tex → `latex/build/`, two
    XeLaTeX passes, `artifacts/study_guide.pdf` and page previews in
    `artifacts/preview/`. It reports pages per chapter against budget, missing
-   glyphs and overfull boxes, and exits 1 on errors or missing glyphs.
-   `--chapters 01` builds a subset.
-6. **Look at the previews.** For every chemfig structure, render a crop at
+   glyphs, horizontal overflow and **vertical overflow** (a table or box
+   taller than a column), and exits 1 on errors, missing glyphs or vertical
+   overflow. `--chapters "01,02"` builds a subset; quote it in PowerShell.
+7. **Look at the previews.** For every chemfig structure, render a crop at
    250 dpi (`pdftoppm -r 250 -x -y -W -H`) and check substituent positions
    and stereo. A wrong structure teaches a wrong answer.
 
@@ -99,6 +102,11 @@ Run from the repository root (`S` = `.codex/skills/gijutsushi-study-guide/script
 | `scripts/source_pack.py` | Gather one chapter's items and past-question key lines into a single pack |
 | `scripts/md2tex.py` | Chapter Markdown dialect → LaTeX fragment (also used by build.py) |
 | `scripts/build.py` | Full PDF build, checks, page budget report, PNG previews |
+| `scripts/qindex.py` | Generate the past-question index chapter from `index_questions.csv` |
+
+Content files: `content/<key>_<slug>.md` where the key orders the book
+(`00a`, `00b`, `01`…`06`, `98`, `99`). Numeric keys become 第N章; other
+chapters set `<!-- label: 序 -->` etc. `outline.md` is not built.
 
 Templates: `assets/latex/main.tex` and `assets/latex/preamble.tex` are copied
 to `latex/` only when missing. After changing the asset, copy it over the repo
@@ -116,6 +124,12 @@ copy deliberately; check first that the copy holds no hand edits.
   then fails on.
 - mhchem: no primes (`R'2` errors), so use `R^1R^2`. Put Japanese arrow
   labels in `->[{\text{…}}]`. Wrap `\underset` in `$…$` outside `\ce`.
+- CJK fallback only works with `\xeCJKsetup{AutoFallBack=true}`. A kana run
+  pulls adjacent kanji into MS Mincho; Traditional-only characters (烴, 脫)
+  then come from the PMingLiU fallback.
+- Tables cannot break across columns or pages. Keep a table under ~25 rows
+  and split longer ones (repeat the header). build.py reports vertical overflow.
+- PowerShell turns `01,02` into an array, so quote it (`"01,02"`).
 - chemfig: branch angles on ring atoms are absolute (`-[:170]`); relative
   `[::x]` points into the ring. For a left-hand group like `MeO_2C`, attach
   to the C with `-[:150,,,3]`. Lengthen arrows with `\arrow{…}[,1.4]`.

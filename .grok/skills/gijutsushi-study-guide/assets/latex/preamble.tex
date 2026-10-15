@@ -7,7 +7,7 @@
 \setsansfont{Arial}
 \setmonofont{Consolas}[Scale=0.9]
 \usepackage{xeCJK}
-\xeCJKsetup{CJKspace=true}
+\xeCJKsetup{CJKspace=true,AutoFallBack=true}
 % circled numbers, geometric shapes, stars: take them from the CJK fonts, not Times
 \xeCJKDeclareCharClass{CJK}{"203B,"2460->"24FF,"25A0->"25FF,"2600->"26FF,"3000->"303F}
 \tracinglostchars=2
@@ -22,7 +22,7 @@
 \setCJKfallbackfamilyfont{jasf}{Microsoft JhengHei}
 \newcommand{\ja}[1]{{\CJKfamily{jarm}#1}}
 \newcommand{\jas}[1]{{\CJKfamily{jasf}#1}}
-\linespread{1.12}
+\linespread{1.2}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2pt plus 1pt}
 \raggedbottom
@@ -63,6 +63,13 @@
 \newunicodechar{∴}{\ensuremath{\therefore}}
 \newunicodechar{≒}{\ensuremath{\fallingdotseq}}
 \newunicodechar{⁄}{/}
+\newunicodechar{⊃}{\ensuremath{\supset}}
+\newunicodechar{⊂}{\ensuremath{\subset}}
+\newunicodechar{∈}{\ensuremath{\in}}
+\newunicodechar{∞}{\ensuremath{\infty}}
+\newunicodechar{∫}{\ensuremath{\int}}
+\newunicodechar{∑}{\ensuremath{\sum}}
+\newunicodechar{∂}{\ensuremath{\partial}}
 
 % ---- exam marks ----
 \newcommand{\maru}{\textcolor{keyc}{{\CJKfamily{jarm}\mdseries ◯}}}
