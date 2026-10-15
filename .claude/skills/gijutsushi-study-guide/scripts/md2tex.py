@@ -180,6 +180,8 @@ def convert(md: str, chapter: str) -> tuple[str, dict]:
             body = s[4:-3].strip() if s.endswith("-->") else s[4:].strip()
             if m := re.match(r"budget:\s*([\d.]+)", body):
                 meta["budget"] = float(m.group(1))
+            elif m := re.match(r"label:\s*(.+)", body):
+                chapter = m.group(1).strip()
             elif m := re.match(r"cols:\s*(.+)", body):
                 spec = m.group(1)
             while not lines[i].rstrip().endswith("-->"):
@@ -267,7 +269,8 @@ def main() -> int:
     p.add_argument("dst", type=Path, help="output .tex fragment")
     p.add_argument("--chapter", help="chapter number shown in the banner (default: filename prefix)")
     a = p.parse_args()
-    chap = a.chapter or str(int(a.src.name[:2]))
+    key = a.src.name.split("_")[0]
+    chap = a.chapter or (f"第{int(key)}章" if key.isdigit() else key)
     tex, meta = convert(a.src.read_text(encoding="utf-8"), chap)
     a.dst.parent.mkdir(parents=True, exist_ok=True)
     a.dst.write_text(tex, encoding="utf-8")

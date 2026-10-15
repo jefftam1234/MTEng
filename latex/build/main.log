@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.2) (preloaded format=xelatex 2026.10.15)  15 OCT 2026 19:20
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.2) (preloaded format=xelatex 2026.10.15)  15 OCT 2026 19:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -8,8 +8,8 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (C:\Users\Jeff\AppData\Local\Programs\MiKTeX\tex/latex/extsizes\extarticle.cls
 Document Class: extarticle 1996/10/08 v1.0 Non Standard LaTeX document class
-(C:\Users\Jeff\AppData\Local\Programs\MiKTeX\tex/latex/extsizes\size9.clo
-File: size9.clo 1999/11/11 v1.4a NON-Standard LaTeX file (size option)
+(C:\Users\Jeff\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 (C:\Users\Jeff\AppData\Local\Programs\MiKTeX\tex/latex/base\exscale.sty
 Package: exscale 2025/06/05 v2.1i Standard LaTeX package exscale
@@ -973,6 +973,10 @@ File: tikzlibraryplotmarks.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 ryplotmarks.code.tex
 File: pgflibraryplotmarks.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
+(C:\Users\Jeff\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz
+/libraries\tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
 (C:\Users\Jeff\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjustbox.sty
 Package: adjustbox 2025/02/26 v1.3c Adjusting TeX boxes (trim, clip, ...)
 
@@ -1465,12 +1469,12 @@ LaTeX Font Info:    ... okay on input line 6.
 * \topmargin=-53.81723pt
 * \headheight=10.0pt
 * \headsep=8.53581pt
-* \topskip=9.0pt
+* \topskip=10.0pt
 * \footskip=19.91692pt
 * \marginparwidth=4.0pt
 * \marginparsep=10.0pt
 * \columnsep=17.07164pt
-* \skip\footins=8.0pt plus 4.0pt minus 2.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -1624,14 +1628,14 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout6 = `main.toc'.
 
 
-(build/chapters.tex (build/ch01.tex [1
+(build/chapters.tex (build/ch03.tex [1
 
 
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \hskip 9.0pt
+(hyperref)                \hskip 10.0pt
 (hyperref)                replaced by space on input line 1.
 
 
@@ -1663,22 +1667,18 @@ Package fontspec Info:
 (fontspec)             Bold/OT:script=hani;language=dflt;"
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 7--7
+[]\TU/Arial(0)/b/n/12 3.1 \TU/YuGothicMedium(0)/b/n/12 エ ネ ル ギ ー 統 計  |・|  政 策[
+]
+ []
+
+
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 10.
+(hyperref)                be the same. Added a new anchor on input line 7.
 
 [2
 
-] [3]
-Underfull \hbox (badness 10000) in alignment at lines 188--188
-[][][][][] 
- []
-
-
-Underfull \hbox (badness 10000) in alignment at lines 278--278
-[][][] 
- []
-
-[4] [5] [6] [7])) [8
+] [3] [4])) [5
 
 ] (F:\JTDev\MTEng\latex\build\main.aux)
  ***********
@@ -1686,15 +1686,15 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2026/08/21>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 2C1D54D97936A1278C6627295EF90197;1438.
+(rerunfilecheck)             Checksum: 05B76694CD4934BBCB4ABC3B7527A97A;879.
  ) 
 Here is how much of TeX's memory you used:
- 47288 strings out of 402982
- 1178962 string characters out of 5448667
- 1955587 words of memory out of 5000000
- 75255 multiletter control sequences out of 15000+600000
- 633800 words of font info for 157 fonts, out of 8000000 for 9000
+ 46353 strings out of 402982
+ 1157181 string characters out of 5448667
+ 1793048 words of memory out of 5000000
+ 74316 multiletter control sequences out of 15000+600000
+ 634214 words of font info for 160 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 104i,24n,121p,769b,1566s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 104i,14n,121p,769b,928s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on F:\JTDev\MTEng\latex\build\main.pdf (8 pages).
+Output written on F:\JTDev\MTEng\latex\build\main.pdf (5 pages).

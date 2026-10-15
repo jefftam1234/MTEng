@@ -50,7 +50,8 @@ def main() -> int:
             print(f"template: copied {name}")
 
     wanted = [c.strip() for c in a.chapters.split(",") if c.strip()]
-    sources = sorted(f for f in content.glob("[0-9][0-9]_*.md") if not wanted or f.name[:2] in wanted)
+    sources = sorted(f for f in content.glob("[0-9][0-9]*_*.md")
+                     if not wanted or f.name.split("_")[0] in wanted)
     if not sources:
         print("error: no content/NN_*.md chapters found", file=sys.stderr)
         return 1
@@ -58,8 +59,9 @@ def main() -> int:
         old.unlink()
     budgets, includes = {}, []
     for src in sources:
-        nn = src.name[:2]
-        tex, meta = md2tex.convert(src.read_text(encoding="utf-8"), str(int(nn)))
+        nn = src.name.split("_")[0]
+        label = f"第{int(nn)}章" if nn.isdigit() else nn
+        tex, meta = md2tex.convert(src.read_text(encoding="utf-8"), label)
         first, _, rest = tex.partition("\n")
         if first.startswith("\\chapterbanner"):
             tex = f"{first}\n\\label{{ch{nn}-start}}\n{rest}\\label{{ch{nn}-end}}\n"
@@ -89,7 +91,7 @@ def main() -> int:
     print(f"overfull boxes: {len(overfull)} (>3pt: {len(big_over)}, max {max(big_over, default=0):.1f}pt)")
 
     aux = (build / "main.aux").read_text(encoding="utf-8", errors="replace") if (build / "main.aux").exists() else ""
-    labels = {m.group(1): int(m.group(2)) for m in re.finditer(r"\\newlabel\{(ch\d\d-(?:start|end))\}\{\{[^}]*\}\{(\d+)\}", aux)}
+    labels = {m.group(1): int(m.group(2)) for m in re.finditer(r"\\newlabel\{(ch\w+-(?:start|end))\}\{\{[^}]*\}\{(\d+)\}", aux)}
     for nn, (title, budget) in budgets.items():
         s, e = labels.get(f"ch{nn}-start"), labels.get(f"ch{nn}-end")
         if s and e:

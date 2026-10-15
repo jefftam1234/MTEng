@@ -9,7 +9,7 @@
 \usepackage{xeCJK}
 \xeCJKsetup{CJKspace=true}
 % circled numbers, geometric shapes, stars: take them from the CJK fonts, not Times
-\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"25A0->"25FF,"2600->"26FF,"3000->"303F}
+\xeCJKDeclareCharClass{CJK}{"203B,"2460->"24FF,"25A0->"25FF,"2600->"26FF,"3000->"303F}
 \tracinglostchars=2
 \setCJKmainfont{PMingLiU}[BoldFont=Microsoft JhengHei Bold]
 \setCJKsansfont{Microsoft JhengHei}[BoldFont=Microsoft JhengHei Bold]
@@ -31,6 +31,7 @@
 \usepackage{chemfig}
 \setchemfig{atom sep=1.7em,bond offset=1pt,double bond sep=2.2pt,arrow coeff=0.8,compound sep=3.2em,arrow offset=4pt}
 \usepackage{pgfplots}\pgfplotsset{compat=1.18}
+\usetikzlibrary{positioning,arrows.meta}
 \usepackage{adjustbox}
 \usepackage{xcolor,colortbl}
 \usepackage{tabularx,booktabs,array}
@@ -73,12 +74,12 @@
 \newcommand{\currentchapter}{}
 \newcommand{\chapterbanner}[3]{%
   \twocolumn[{%
-    \renewcommand{\currentchapter}{第#1章\ #2}%
+    \renewcommand{\currentchapter}{#1\ #2}%
     \begin{tcolorbox}[colback=accent,colframe=accent,coltext=white,arc=0pt,boxrule=0pt,left=6pt,top=4pt,bottom=4pt]
-      {\sffamily\bfseries\LARGE 第#1章\quad #2}\hfill{\sffamily\small #3}
+      {\sffamily\bfseries\LARGE #1\quad #2}\hfill{\sffamily\small #3}
     \end{tcolorbox}\vspace{2pt}}]%
-  \gdef\currentchapter{第#1章\ #2}%
-  \addcontentsline{toc}{section}{第#1章\quad #2}}
+  \gdef\currentchapter{#1\ #2}%
+  \addcontentsline{toc}{section}{#1\quad #2}}
 \usepackage{needspace}
 \newcommand{\secthead}[2]{\par\needspace{8\baselineskip}\vspace{5pt plus 2pt}%
   \noindent{\sffamily\bfseries\large\color{accent}#1}\hfill{\scriptsize\color{tagc}#2}\par
