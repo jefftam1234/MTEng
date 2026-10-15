@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 - 2026-10-15
+
+- User request: a single skill folder, loaded from AGENTS.md. Removed the `.agents/skills`, `.claude/skills` and `.grok/skills` junctions. They were removed as links only (`cmd /c rmdir`), and the canonical file count stayed at 18 before and after. Git had been tracking four copies of the skill through these junctions.
+- Removed the `publish-workspace-skills` skill from this repo, because its only purpose was recreating those links. AGENTS.md now imports this skill with `@.codex/skills/gijutsushi-study-guide/SKILL.md` (CLAUDE.md imports AGENTS.md). `.gitignore` excludes `.agents/`, `.claude/skills/` and `.grok/`.
+- AGENTS.md also states the exception that `content/98_qindex.md` is generated and must not be hand-edited.
+- Contract impact: loading mechanism changed (import instead of per-agent skill directories). Claude Code no longer lists this skill under its Skill tool; the content loads with the project instructions instead. No script changes.
+- Validation: check_skill.py passed; git index verified to contain one copy of the skill.
+
 ## 1.2.0 - 2026-10-15
 
 - Completed guide v1 at the user's request ("go with your suggestion, and give me the full doc, then commit and push"): chapters 02–05, strategy (00a), 考前速記 (00b), glossary (06), past-question index (98, generated) and gap appendix (99). The result is 50 pages.

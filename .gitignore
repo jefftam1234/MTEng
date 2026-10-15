@@ -14,3 +14,8 @@ __pycache__/
 
 # Claude Code session state
 .claude/scheduled_tasks.lock
+
+# One skill folder only: .codex/skills (imported from AGENTS.md). No per-agent copies or links.
+.agents/
+.claude/skills/
+.grok/
